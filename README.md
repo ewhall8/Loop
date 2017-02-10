@@ -98,6 +98,8 @@ For FAQs and other tips, refer to the [Wiki](https://github.com/LoopKit/Loop/wik
 
 (Note: there is also a tab for the Wiki at the top of this page)
 
+In order to get the push notification remotely you need to install Loop Follow app and follow the steps [here](https://github.com/amazaheri/Loop-Follow)
+
 # License and Code of Conduct
 
 Please read the [LICENSE](/LICENSE.md) and [CODE_OF_CONDUCT](/CODE_OF_CONDUCT.md)
