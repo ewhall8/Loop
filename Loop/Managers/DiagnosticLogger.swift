@@ -18,20 +18,19 @@ final class DiagnosticLogger {
             try! KeychainManager().setMLabDatabaseName(mLabService.databaseName, APIKey: mLabService.APIKey)
         }
     }
-
-    init() {
-            let settings = Bundle.main.remoteSettings, AzureAPIHost = settings?["AzureAppServiceURL"]
-        
     
-        self.AzureAPIHost=AzureAPIHost!
+    init() {
 
-      if let (databaseName, APIKey) = KeychainManager().getMLabCredentials() {
+
+        self.AzureAPIHost=AzureAPIHost!
+        
+        if let (databaseName, APIKey) = KeychainManager().getMLabCredentials() {
             mLabService = MLabService(databaseName: databaseName, APIKey: APIKey)
         } else {
             mLabService = MLabService(databaseName: nil, APIKey: nil)
         }
     }
-
+    
     func addMessage(_ message: [String: Any], toCollection collection: String) {
         if !isSimulator,
             let messageData = try? JSONSerialization.data(withJSONObject: message, options: []),
@@ -60,7 +59,8 @@ final class DiagnosticLogger {
                 
                 let task = URLSession.shared.uploadTask(with: request as URLRequest, from: messageData) { (_, _, error) -> Void in
                     if let error = error {
-                        //NSLog("%s error: %@", error.localizedDescription)
+
+                        NSLog("%s error: %@", error.localizedDescription)
                     }
                 }
                 
@@ -69,6 +69,5 @@ final class DiagnosticLogger {
         }
         
     }
-
+    
 }
-
