@@ -21,7 +21,9 @@ final class DiagnosticLogger {
     
     init() {
 
-
+        let settings = Bundle.main.remoteSettings,
+        AzureAPIHost = settings?["AzureAppServiceURL"]
+        
         self.AzureAPIHost=AzureAPIHost!
         
         if let (databaseName, APIKey) = KeychainManager().getMLabCredentials() {
