@@ -279,6 +279,8 @@ final class LoopDataManager {
             self.lastBolus = (units: units, date: date)
             self.notify(forChange: .bolus)
         }
+        NotificationManager.sendAlertPushNotification(alert: String(format:"%.1f", units) + "U Bolus successfully enacted")
+
     }
 
     /// Adds and stores new pump events
@@ -821,7 +823,7 @@ final class LoopDataManager {
                 switch result {
                 case .success(let basal):
                     self.lastTempBasal = basal
-                    self.addLoopTempBasalNotification(glucose: (self.deviceDataManager.glucoseStore?.latestGlucose)!,prediction: self.predictedGlucose!,recommendedTempBasal: recommendedTempBasal)
+                    self.addLoopTempBasalNotification(glucose: (self.glucoseStore?.latestGlucose)!,prediction: self.predictedGlucose!,recommendedTempBasal: recommendedTempBasal)
                     self.recommendedTempBasal = nil
                     
                     completion(nil)
@@ -957,16 +959,14 @@ extension LoopDataManager {
             } catch let error {
                 updateError = error
             }
-
-            handler(self, LoopStateView(loopDataManager: self, updateError: updateError))
+           handler(self, LoopStateView(loopDataManager: self, updateError: updateError))
         }
-        NotificationManager.sendAlertPushNotification(alert: String(format:"%.1f", units) + "U Bolus successfully enacted")
     }
     
-    private func addLoopTempBasalNotification(glucose: GlucoseValue, prediction: [GlucoseValue], recommendedTempBasal: LoopDataManager.TempBasalRecommendation?) {
+    func addLoopTempBasalNotification(glucose: GlucoseValue, prediction: [GlucoseValue], recommendedTempBasal: LoopDataManager.TempBasalRecommendation?) {
         let dateFormatter = DateFormatter.ISO8601StrictDateFormatter()
         let logger = DiagnosticLogger();
-        let unit = HKUnit.milligramsPerDeciliterUnit()
+        let unit = HKUnit.milligramsPerDeciliter()
         let pushMessage: [String: AnyObject] = [
             "bg": glucose.quantity.doubleValue(for: unit) as AnyObject,
             "temp": "absolute" as AnyObject,
