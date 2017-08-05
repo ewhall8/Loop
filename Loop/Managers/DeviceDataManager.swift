@@ -23,7 +23,7 @@ final class DeviceDataManager {
 
     // MARK: - Utilities
 
-    let logger = DiagnosticLogger()
+    let logger = DiagnosticLogger.shared!
 
     /// Remember the launch date of the app for diagnostic reporting
     fileprivate let launchDate = Date()
@@ -61,7 +61,7 @@ final class DeviceDataManager {
             }
 
             if let oldVal = oldVal, newVal - oldVal >= 0.5 {
-                AnalyticsManager.sharedManager.pumpBatteryWasReplaced()
+                AnalyticsManager.shared.pumpBatteryWasReplaced()
             }
         }
     }
@@ -93,7 +93,7 @@ final class DeviceDataManager {
                 case is MySentryAlertMessageBody, is MySentryAlertClearedMessageBody:
                     break
                 case let body:
-                    logger.addMessage(["messageType": Int(message.messageType.rawValue), "messageBody": body.txData.hexadecimalString], toCollection: "sentryOther")
+                    logger.forCategory("MySentry").info(["messageType": Int(message.messageType.rawValue), "messageBody": body.txData.hexadecimalString])
                 }
             default:
                 break
@@ -112,7 +112,7 @@ final class DeviceDataManager {
 
         rileyLinkManager.connectDevice(device)
 
-        AnalyticsManager.sharedManager.didChangeRileyLinkConnectionState()
+        AnalyticsManager.shared.didChangeRileyLinkConnectionState()
     }
 
     func disconnectFromRileyLink(_ device: RileyLinkDevice) {
@@ -120,7 +120,7 @@ final class DeviceDataManager {
 
         rileyLinkManager.disconnectDevice(device)
 
-        AnalyticsManager.sharedManager.didChangeRileyLinkConnectionState()
+        AnalyticsManager.shared.didChangeRileyLinkConnectionState()
 
         if connectedPeripheralIDs.count == 0 {
             NotificationManager.clearPendingNotificationRequests()
@@ -246,7 +246,7 @@ final class DeviceDataManager {
                     }
 
                     if newValue.unitVolume > previousVolume + 1 {
-                        AnalyticsManager.sharedManager.reservoirWasRewound()
+                        AnalyticsManager.shared.reservoirWasRewound()
                     }
                 }
             }
@@ -309,15 +309,9 @@ final class DeviceDataManager {
                     completion(.failure(LoopError.invalidData(details: errorStr)))
                     return
                 }
-        let battery = BatteryStatus(voltage: status.batteryVolts, status: BatteryIndicator(batteryStatus: status.batteryStatus))
                 
-                if let sentrySupported = self.pumpState?.pumpModel?.larger , !sentrySupported {
-                    self.setBatteryDataforNonMySentryPumps(voltage: status.batteryVolts)
-                    }
-                
-                let nsPumpStatus = NightscoutUploadKit.PumpStatus(clock: date, pumpID: ops.pumpState.pumpID, iob: nil, battery: battery, suspended: status.suspended, bolusing: status.bolusing, reservoir: status.reservoir)
-                self.nightscoutDataManager.uploadDeviceStatus(nsPumpStatus)
-                completion(.success(status: status, date: date))
+                completion(.success((status: status, date: date)))
+
             case .failure(let error):
                 self.logger.addError("Failed to fetch pump status: \(error)", fromSource: "RileyLink")
                 completion(.failure(error))
@@ -377,11 +371,15 @@ final class DeviceDataManager {
      Ensures pump data is current by either waking and polling, or ensuring we're listening to sentry packets.
      */
     fileprivate func assertCurrentPumpData() {
-        guard let device = rileyLinkManager.firstConnectedDevice, pumpDataIsStale() else {
+        guard let device = rileyLinkManager.firstConnectedDevice else {
             return
         }
 
         device.assertIdleListening()
+
+        guard pumpDataIsStale() else {
+            return
+        }
 
         readPumpData { (result) in
             let nsPumpStatus: NightscoutUploadKit.PumpStatus?
@@ -519,6 +517,7 @@ final class DeviceDataManager {
     private func setupCGM() {
         cgmManager = cgm?.createManager()
         cgmManager?.delegate = self
+        loopManager.glucoseStore.managedDataInterval = cgmManager?.managedDataInterval
 
         /// Controls the management of the RileyLink timer tick, which is a reliably-changing BLE
         /// characteristic which can cause the app to wake. For most users, the G5 Transmitter and
@@ -677,7 +676,8 @@ final class DeviceDataManager {
         statusExtensionManager = StatusExtensionDataManager(deviceDataManager: self)
         loopManager = LoopDataManager(
             delegate: self,
-            lastLoopCompleted: statusExtensionManager.context?.loop?.lastCompleted
+            lastLoopCompleted: statusExtensionManager.context?.loop?.lastCompleted,
+            lastTempBasal: statusExtensionManager.context?.netBasal?.tempBasal
         )
         watchManager = WatchDataManager(deviceDataManager: self)
         nightscoutDataManager = NightscoutDataManager(deviceDataManager: self)
@@ -730,7 +730,8 @@ extension DeviceDataManager: DoseStoreDelegate {
             case .success(let objects):
                 completionHandler(objects)
             case .failure(let error):
-                self.logger.addError(error, fromSource: "NightscoutUploadKit")
+                let logger = DiagnosticLogger.shared!.forCategory("NightscoutUploader")
+                logger.error(error)
                 completionHandler([])
             }
         }

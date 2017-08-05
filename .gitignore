@@ -69,3 +69,6 @@ Loop/RemoteSettings.plist
 
 # OS
 .DS_Store
+
+# Framework development
+Loop.xcworkspace
