@@ -149,7 +149,7 @@ final class CategoryLogger {
     }
     
     func debug(_ message: String) {
-        systemLog.error("%{public}@", message)
+        systemLog.debug("%{public}@", message)
         remoteLog(.debug, message: message)
     }
     
@@ -159,7 +159,7 @@ final class CategoryLogger {
     }
     
     func info(_ message: String) {
-        systemLog.error("%{public}@", message)
+        systemLog.info("%{public}@", message)
         remoteLog(.info, message: message)
     }
     
