@@ -41,9 +41,12 @@ final class EnliteCGMManager: CGMManager {
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if let latestSensorEvent = events.compactMap({ $0.glucoseEvent as?  RelativeTimestampedGlucoseEvent }).last {
                     self.sensorState = EnliteSensorDisplayable(latestSensorEvent)
 =======
+=======
+>>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
             ops.runSession(withName: "Fetch Enlite History", using: device) { (session) in
                 do {
                     let events = try session.getGlucoseHistoryEvents(since: latestGlucoseDate.addingTimeInterval(.minutes(1)))
@@ -66,6 +69,9 @@ final class EnliteCGMManager: CGMManager {
                     completion(.newData(glucoseValues))
                 } catch let error {
                     completion(.error(error))
+<<<<<<< HEAD
+>>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
+=======
 >>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
                 }
             }

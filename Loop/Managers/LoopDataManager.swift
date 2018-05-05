@@ -41,6 +41,7 @@ final class LoopDataManager {
         lastLoopCompleted: Date?,
         lastTempBasal: DoseEntry?,
 <<<<<<< HEAD
+<<<<<<< HEAD
         basalRateSchedule: BasalRateSchedule? = UserDefaults.standard.basalRateSchedule,
         carbRatioSchedule: CarbRatioSchedule? = UserDefaults.standard.carbRatioSchedule,
         insulinModelSettings: InsulinModelSettings? = UserDefaults.standard.insulinModelSettings,
@@ -49,6 +50,8 @@ final class LoopDataManager {
         settings: LoopSettings = UserDefaults.standard.loopSettings ?? LoopSettings()
         ) {
 =======
+=======
+>>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
         basalRateSchedule: BasalRateSchedule? = UserDefaults.appGroup.basalRateSchedule,
         carbRatioSchedule: CarbRatioSchedule? = UserDefaults.appGroup.carbRatioSchedule,
         insulinModelSettings: InsulinModelSettings? = UserDefaults.appGroup.insulinModelSettings,
@@ -134,9 +137,12 @@ final class LoopDataManager {
         set {
             carbStore.carbRatioSchedule = newValue
 <<<<<<< HEAD
+<<<<<<< HEAD
             UserDefaults.standard.carbRatioSchedule = newValue
             
 =======
+=======
+>>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
             UserDefaults.appGroup.carbRatioSchedule = newValue
 
 >>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
@@ -198,8 +204,13 @@ final class LoopDataManager {
             carbStore.insulinSensitivitySchedule = newValue
             doseStore.insulinSensitivitySchedule = newValue
 <<<<<<< HEAD
+<<<<<<< HEAD
             
             UserDefaults.standard.insulinSensitivitySchedule = newValue
+=======
+
+            UserDefaults.appGroup.insulinSensitivitySchedule = newValue
+>>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
 =======
 
             UserDefaults.appGroup.insulinSensitivitySchedule = newValue
