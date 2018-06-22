@@ -248,19 +248,10 @@
 		7D70765E1FE06EE3004AC8EA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D7076601FE06EE3004AC8EA /* Localizable.strings */; };
 		7D7076631FE06EE4004AC8EA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D7076651FE06EE4004AC8EA /* Localizable.strings */; };
 		7D7076681FE0702F004AC8EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D70766A1FE0702F004AC8EA /* InfoPlist.strings */; };
-<<<<<<< HEAD
-<<<<<<< HEAD
 		826A59501DA19AA500B0095A /* RemoteSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 826A594F1DA19AA500B0095A /* RemoteSettings.plist */; };
-=======
 		894B91CD1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894B91CC1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift */; };
 		894B91CE1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894B91CC1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift */; };
 		894F71E21FFEC4D8007D365C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 894F71E11FFEC4D8007D365C /* Assets.xcassets */; };
->>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
-=======
-		894B91CD1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894B91CC1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift */; };
-		894B91CE1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894B91CC1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift */; };
-		894F71E21FFEC4D8007D365C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 894F71E11FFEC4D8007D365C /* Assets.xcassets */; };
->>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
 		C10428971D17BAD400DD539A /* NightscoutUploadKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C10428961D17BAD400DD539A /* NightscoutUploadKit.framework */; };
 		C10B28461EA9BA5E006EA1FC /* far_future_high_bg_forecast.json in Resources */ = {isa = PBXBuildFile; fileRef = C10B28451EA9BA5E006EA1FC /* far_future_high_bg_forecast.json */; };
 		C11C87DD1E21E53500BB71D3 /* GlucoseThreshold.swift in Sources */ = {isa = PBXBuildFile; fileRef = C178249D1E19B62300D9D25C /* GlucoseThreshold.swift */; };
@@ -640,20 +631,10 @@
 		7DD382771F8DBFC60071272B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
 		7DD382781F8DBFC60071272B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		7DD382791F8DBFC60071272B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Interface.strings; sourceTree = "<group>"; };
-<<<<<<< HEAD
-<<<<<<< HEAD
 		826A594F1DA19AA500B0095A /* RemoteSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RemoteSettings.plist; sourceTree = "<group>"; };
-		C10428961D17BAD400DD539A /* NightscoutUploadKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NightscoutUploadKit.framework; path = Carthage/Build/iOS/NightscoutUploadKit.framework; sourceTree = "<group>"; };
-=======
 		894B91CC1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlucoseRangeScheduleOverrideUserInfo.swift; sourceTree = "<group>"; };
 		894F71E11FFEC4D8007D365C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C10428961D17BAD400DD539A /* NightscoutUploadKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NightscoutUploadKit.framework; path = Carthage/Build/iOS/NightscoutUploadKit.framework; sourceTree = SOURCE_ROOT; };
->>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
-=======
-		894B91CC1FF9F45900DA65F5 /* GlucoseRangeScheduleOverrideUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlucoseRangeScheduleOverrideUserInfo.swift; sourceTree = "<group>"; };
-		894F71E11FFEC4D8007D365C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C10428961D17BAD400DD539A /* NightscoutUploadKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NightscoutUploadKit.framework; path = Carthage/Build/iOS/NightscoutUploadKit.framework; sourceTree = SOURCE_ROOT; };
->>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
 		C10B28451EA9BA5E006EA1FC /* far_future_high_bg_forecast.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = far_future_high_bg_forecast.json; sourceTree = "<group>"; };
 		C12F21A61DFA79CB00748193 /* recommend_temp_basal_very_low_end_in_range.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recommend_temp_basal_very_low_end_in_range.json; sourceTree = "<group>"; };
 		C15713811DAC6983005BC4D2 /* MealBolusNightscoutTreatment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MealBolusNightscoutTreatment.swift; sourceTree = "<group>"; };
@@ -2078,7 +2059,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: loudnate@gmail.com (XZN842LDLT)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 48;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2100,7 +2081,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MAIN_APP_BUNDLE_IDENTIFIER = "$(inherited).Loop";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2145,7 +2126,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: loudnate@gmail.com (XZN842LDLT)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 48;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2161,7 +2142,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MAIN_APP_BUNDLE_IDENTIFIER = "$(inherited).Loop";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -2405,11 +2386,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 48;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 46;
+				DYLIB_CURRENT_VERSION = 48;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = LoopUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2432,11 +2413,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 48;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 46;
+				DYLIB_CURRENT_VERSION = 48;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = LoopUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
