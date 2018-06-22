@@ -256,14 +256,10 @@ extension DatedRangeContext: RawRepresentable {
         else {
             return nil
         }
-<<<<<<< HEAD
-       
-        self.init(startDate: startDate, endDate: endDate, minValue: minValue, maxValue: maxValue)    }
-=======
+
 
         self.init(startDate: startDate, endDate: endDate, minValue: minValue, maxValue: maxValue)
     }
->>>>>>> 49dbf9513c56151c33e9f0c4ca56aafef115cf75
 }
 
 struct StatusExtensionContext: RawRepresentable {

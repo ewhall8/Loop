@@ -32,11 +32,10 @@ struct NotificationManager {
     
     static func sendAlertPushNotification(alert: String){
         let logger = DiagnosticLogger.shared!
-        let dateFormatter = DateFormatter.ISO8601StrictDateFormatter()
         let date = NSDate()
         let pushMessage: [String: AnyObject] = [
             "DeviceName": "Loop" as AnyObject,
-            "TimeStamp": dateFormatter.string(from: date as Date) as AnyObject,
+            "TimeStamp": date as AnyObject,
             "Reason": alert as AnyObject]
         logger.loopPushNotification(message: pushMessage, loopAlert: true)
     }

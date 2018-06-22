@@ -1123,7 +1123,7 @@ final class LoopDataManager {
             }
         }
     }
-
+}
 
 
 /// Describes a view into the loop state
@@ -1249,7 +1249,7 @@ extension LoopDataManager {
     
     func addLoopTempBasalNotification() {
         if self.recommendedTempBasal?.recommendation != nil {
-            let dateFormatter = DateFormatter.ISO8601StrictDateFormatter()
+            //let dateFormatter = DateFormatter.ISO8601StrictDateFormatter()
             let logger = DiagnosticLogger.shared!
             let date = Date()
             let unit = HKUnit.milligramsPerDeciliter()
@@ -1259,7 +1259,7 @@ extension LoopDataManager {
                 "received": true as AnyObject,
                 "rate": (self.recommendedTempBasal?.recommendation)?.unitsPerHour as AnyObject,
                 "duration": (self.recommendedTempBasal?.recommendation)?.duration.minutes as AnyObject,
-                "timestamp": dateFormatter.string(from: date) as AnyObject,
+                "timestamp": date as AnyObject,
                 "eventualBG": round((self.predictedGlucose)!.last!.quantity.doubleValue(for: unit)) as AnyObject]
             logger.loopPushNotification(message: pushMessage, loopAlert: false);
         }
