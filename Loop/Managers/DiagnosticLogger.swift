@@ -8,22 +8,14 @@
 
 import Foundation
 import os.log
+import LoopKit
 
 
 final class DiagnosticLogger {
     
     private let isSimulator: Bool = TARGET_OS_SIMULATOR != 0
-    let subsystem: String
-    let version: String
     let AzureAPIHost: String
-    
-    var mLabService: MLabService {
-        didSet {
-            try! KeychainManager().setMLabDatabaseName(mLabService.databaseName, APIKey: mLabService.APIKey)
-        }
-    }
-    
-    
+
     var logglyService: LogglyService {
         didSet {
             try! KeychainManager().setLogglyCustomerToken(logglyService.customerToken)
@@ -31,26 +23,19 @@ final class DiagnosticLogger {
     }
     
     let remoteLogLevel: OSLogType
-    
-    static var shared: DiagnosticLogger?
-    
-    init(subsystem: String, version: String) {
+
+
+    static let shared: DiagnosticLogger = DiagnosticLogger()
+
+    init() {
+        remoteLogLevel = isSimulator ? .fault : .info
         let settings = Bundle.main.remoteSettings,
         AzureAPIHost = settings?["AzureAppServiceURL"]
-        
-        self.AzureAPIHost=AzureAPIHost!
-        
-        self.subsystem = subsystem
-        self.version = version
-        remoteLogLevel = isSimulator ? .fault : .info
-        
-        
-        if let (databaseName, APIKey) = KeychainManager().getMLabCredentials() {
-            mLabService = MLabService(databaseName: databaseName, APIKey: APIKey)
-        } else {
-            mLabService = MLabService(databaseName: nil, APIKey: nil)
-        }
-        
+    
+    self.AzureAPIHost=AzureAPIHost!
+        // Delete the mLab credentials as they're no longer supported
+        try! KeychainManager().setMLabDatabaseName(nil, APIKey: nil)
+
         let customerToken = KeychainManager().getLogglyCustomerToken()
         logglyService = LogglyService(customerToken: customerToken)
     }
@@ -117,8 +102,8 @@ final class CategoryLogger {
     fileprivate init(logger: DiagnosticLogger, category: String) {
         self.logger = logger
         self.category = category
-        
-        systemLog = OSLog(subsystem: logger.subsystem, category: category)
+
+        systemLog = OSLog(category: category)
     }
     
     private func remoteLog(_ type: OSLogType, message: String) {
@@ -136,11 +121,6 @@ final class CategoryLogger {
         }
         
         logger.logglyService.client?.send(message, tags: [type.tagName, category])
-        
-        // Legacy mLab logging. To be removed.
-        if let messageData = try? JSONSerialization.data(withJSONObject: message, options: []) {
-            logger.mLabService.uploadTaskWithData(messageData, inCollection: category)?.resume()
-        }
     }
     
     func debug(_ message: [String: Any]) {
@@ -162,7 +142,12 @@ final class CategoryLogger {
         systemLog.info("%{public}@", message)
         remoteLog(.info, message: message)
     }
-    
+
+    func `default`(_ message: String) {
+        systemLog.info("%{public}@", message)
+        remoteLog(.default, message: message)
+    }
+
     func error(_ message: [String: Any]) {
         systemLog.error("%{public}@", String(reflecting: message))
         remoteLog(.error, message: message)
