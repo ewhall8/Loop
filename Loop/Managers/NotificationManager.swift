@@ -30,7 +30,7 @@ struct NotificationManager {
     }
     
     static func sendAlertPushNotification(alert: String){
-        let logger = DiagnosticLogger.shared!
+        let logger = DiagnosticLogger.shared
         let dateFormatter = DateFormatter()
         let date = Date()
         dateFormatter.dateStyle = .full

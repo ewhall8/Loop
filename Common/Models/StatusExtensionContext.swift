@@ -151,36 +151,7 @@ extension PredictedGlucoseContext: RawRepresentable {
     }
 }
 
-<<<<<<< HEAD
-extension DatedRangeContext: RawRepresentable {
-    public typealias RawValue = [String: Any]
 
-    public var rawValue: RawValue {
-        return [
-            "startDate": startDate,
-            "endDate": endDate,
-            "minValue": minValue,
-            "maxValue": maxValue
-        ]
-    }
-
-    public init?(rawValue: RawValue) {
-        guard
-            let startDate = rawValue["startDate"] as? Date,
-            let endDate = rawValue["endDate"] as? Date,
-            let minValue = rawValue["minValue"] as? Double,
-            let maxValue = rawValue["maxValue"] as? Double
-        else {
-            return nil
-        }
-
-
-        self.init(startDate: startDate, endDate: endDate, minValue: minValue, maxValue: maxValue)
-    }
-}
-
-=======
->>>>>>> 2e39a93101f08dfeb87c606abe7a9546cee3f8ea
 struct StatusExtensionContext: RawRepresentable {
     typealias RawValue = [String: Any]
     private let version = 5
