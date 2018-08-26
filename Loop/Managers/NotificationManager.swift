@@ -8,8 +8,7 @@
 
 import UIKit
 import UserNotifications
-
-import RileyLinkKit
+import LoopKit
 
 
 struct NotificationManager {
@@ -31,7 +30,7 @@ struct NotificationManager {
     }
     
     static func sendAlertPushNotification(alert: String){
-        let logger = DiagnosticLogger.shared!
+        let logger = DiagnosticLogger.shared
         let dateFormatter = DateFormatter()
         let date = Date()
         dateFormatter.dateStyle = .full
@@ -75,13 +74,26 @@ struct NotificationManager {
         let notification = UNMutableNotificationContent()
         
         notification.title = NSLocalizedString("Bolus", comment: "The notification title for a bolus failure")
-        
+
+        let sentenceFormat = NSLocalizedString("%@.", comment: "Appends a full-stop to a statement")
+
         switch error {
-        case let error as RileyLinkKit.SetBolusError:
+        case let error as SetBolusError:
             notification.subtitle = error.errorDescriptionWithUnits(units)
-            notification.body = String(format: "%@ %@", error.failureReason!, error.recoverySuggestion!)
+
+            let body = [error.failureReason, error.recoverySuggestion].compactMap({ $0 }).map({
+                String(format: sentenceFormat, $0)
+            }).joined(separator: " ")
+
+            notification.body = body
         case let error as LocalizedError:
-            notification.body = error.errorDescription ?? error.localizedDescription
+            if let subtitle = error.errorDescription {
+                notification.subtitle = subtitle
+            }
+            let message = [error.failureReason, error.recoverySuggestion].compactMap({ $0 }).map({
+                String(format: sentenceFormat, $0)
+            }).joined(separator: "\n")
+            notification.body = message.isEmpty ? String(describing: error) : message
         default:
             notification.body = error.localizedDescription
         }
@@ -146,7 +158,20 @@ struct NotificationManager {
             UNUserNotificationCenter.current().add(request)
         }
     }
-    
+
+    static func clearLoopNotRunningNotifications() {
+        // Clear out any existing not-running notifications
+        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+            let loopNotRunningIdentifiers = notifications.filter({
+                $0.request.content.categoryIdentifier == Category.loopNotRunning.rawValue
+            }).map({
+                $0.request.identifier
+            })
+
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: loopNotRunningIdentifiers)
+        }
+    }
+
     static func sendPumpBatteryLowNotification() {
         let notification = UNMutableNotificationContent()
         
@@ -164,7 +189,11 @@ struct NotificationManager {
         
         UNUserNotificationCenter.current().add(request)
     }
-    
+
+    static func clearPumpBatteryLowNotification() {
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [Category.pumpBatteryLow.rawValue])
+    }
+
     static func sendPumpReservoirEmptyNotification() {
         let notification = UNMutableNotificationContent()
         
@@ -215,7 +244,8 @@ struct NotificationManager {
         
         UNUserNotificationCenter.current().add(request)
     }
-    
-    
-    
+
+    static func clearPumpReservoirNotification() {
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [Category.pumpReservoirLow.rawValue])
+    }
 }
