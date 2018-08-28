@@ -480,7 +480,6 @@ extension LoopDataManager {
                 self.lastRequestedBolus = nil
                 self.insulinEffect = nil
                 self.notify(forChange: .bolus)
-                
                 completion?()
             }
         }

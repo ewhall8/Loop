@@ -324,6 +324,7 @@ extension DeviceDataManager {
                 completion(error)
             } else {
                 self.loopManager.addConfirmedBolus(units: units, at: Date()) {
+                    NotificationManager.sendAlertPushNotification(alert: String(format:"%.1f", units) + "U Bolus successfully enacted")
                     completion(nil)
                 }
             }
