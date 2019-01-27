@@ -4,3 +4,8 @@ framework module Crypto {
   export *
   module * { export * }
 }
+
+module Crypto.Swift {
+    header "Crypto-Swift.h"
+    requires objc
+}

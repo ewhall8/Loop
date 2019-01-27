@@ -8,11 +8,11 @@
   "tvOS" : [
 
   ],
-  "commitish" : "v0.3.3",
+  "commitish" : "v1.0",
   "iOS" : [
     {
       "name" : "G4ShareSpy",
-      "hash" : "058f1119e227d680500b4adec40a5263cf61104be2580549218f6b5876edc20f"
+      "hash" : "b687b026f3ebc218f4e54b3bcda7d2c2646f778e7d0f43146a4ac62469b68371"
     }
   ]
 }
