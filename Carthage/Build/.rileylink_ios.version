@@ -4,38 +4,50 @@
   ],
   "watchOS" : [
     {
+      "name" : "RileyLinkKit",
+      "hash" : "e7b0f3ef0d2d2e4437f9079a3563bee55bd3f6bba3179f5873339fed917789ff"
+    },
+    {
       "name" : "RileyLinkBLEKit",
-      "hash" : "c94d79d1403870df4539dd531024d5b44333642f28d49f8e9f4e26fbad42fd7a"
+      "hash" : "b6d7b153e9e9ae98d357968566eb5ce313fd8e4d68f1212406d2f1df5cde9a3f"
+    },
+    {
+      "name" : "MinimedKit",
+      "hash" : "2088ce0871cbfae039a6589cec165ad75713c7cdc551014a972b0c5e98db71c7"
     }
   ],
   "tvOS" : [
 
   ],
-  "commitish" : "v2.0.0",
+  "commitish" : "v2.1.0",
   "iOS" : [
     {
       "name" : "Crypto",
-      "hash" : "03768a89eb61f55cc386ae4586048ae851d61373da6868aab905db2a2586efc7"
-    },
-    {
-      "name" : "RileyLinkKitUI",
-      "hash" : "dc1035fdadd445d12f383f01c10225b62aa7eca1f4da9016420d1835487628bb"
+      "hash" : "0bd118ad5acedc86365a5b3180d9591807324a4bcb512abef667b5f790ff0c6b"
     },
     {
       "name" : "RileyLinkKit",
-      "hash" : "69fd21c5cd31ca8fe4611b01139780b1df32e71400a6fd91ebc865d85791b0a5"
+      "hash" : "7286f08d99655a38b5f73337b9199d34f4753c06bcaa578001f2e8c5e488dd33"
     },
     {
       "name" : "NightscoutUploadKit",
-      "hash" : "d3fe0bc023a0a275dddec6bba616ff38239acf44ee71879e270a3f8690e4961d"
+      "hash" : "986be1b2651007e3b49397c118231b894f00957d7bc59114e259c081d3bfdadb"
+    },
+    {
+      "name" : "MinimedKitUI",
+      "hash" : "79781972ff7811d7597d376f4644be9e1be4d235a497314fb25111ab097db0a5"
+    },
+    {
+      "name" : "RileyLinkKitUI",
+      "hash" : "a267b1cd86b01abe17c8eceee046a39778f377e7397738c1cef9017eb16c7383"
     },
     {
       "name" : "RileyLinkBLEKit",
-      "hash" : "a95573627d6ad9a853c620938e53e97d4c054553fde4af097a489038b020fd2f"
+      "hash" : "5fcb2b69bb00b10e82d9f2b500efb6e6572d69ce66161a8cae2927d02106e4ba"
     },
     {
       "name" : "MinimedKit",
-      "hash" : "c5f8ad60aea1a15646ed78afcb485435b55cb6e5b54d7d299d2415e5fa74cf38"
+      "hash" : "0de0a011108a6992b418d18aa4b00b0946fb7c7f49e85ed75cd780d12e442fa1"
     }
   ]
 }

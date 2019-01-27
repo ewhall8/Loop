@@ -21,9 +21,7 @@ final class LoopDataManager {
     }
     
     static let LoopUpdateContextKey = "com.loudnate.Loop.LoopDataManager.LoopUpdateContext"
-    
-    fileprivate typealias GlucoseChange = (start: GlucoseValue, end: GlucoseValue)
-    
+
     let carbStore: CarbStore
     
     let doseStore: DoseStore
@@ -92,8 +90,9 @@ final class LoopDataManager {
                 queue: nil
             ) { (note) -> Void in
                 self.dataAccessQueue.async {
-                    self.logger.info("Received notification of carb entries updating")
-                    
+
+                    self.logger.default("Received notification of carb entries updating")
+
                     self.carbEffect = nil
                     self.carbsOnBoard = nil
                     self.notify(forChange: .carbs)
@@ -105,11 +104,12 @@ final class LoopDataManager {
                 queue: nil
             ) { (note) in
                 self.dataAccessQueue.async {
-                    self.logger.info("Received notification of glucose samples changing")
-                    
+
+                    self.logger.default("Received notification of glucose samples changing")
+
                     self.glucoseMomentumEffect = nil
-                    self.retrospectiveGlucoseChange = nil
-                    
+
+
                     self.notify(forChange: .glucose)
                 }
             }
@@ -136,7 +136,7 @@ final class LoopDataManager {
             predictedGlucose = nil
             
             // Carb data may be back-dated, so re-calculate the retrospective glucose.
-            retrospectivePredictedGlucose = nil
+            retrospectiveGlucoseDiscrepancies = nil
         }
     }
     private var insulinEffect: [GlucoseEffect]? {
@@ -154,25 +154,24 @@ final class LoopDataManager {
             predictedGlucose = nil
         }
     }
-    
-    /// The change in glucose over the reflection time interval (default is 30 min)
-    fileprivate var retrospectiveGlucoseChange: GlucoseChange? {
+
+    private var retrospectiveGlucoseDiscrepancies: [GlucoseEffect]? {
+
         didSet {
-            retrospectivePredictedGlucose = nil
+            retrospectiveGlucoseDiscrepanciesSummed = retrospectiveGlucoseDiscrepancies?.combinedSums(of: settings.retrospectiveCorrectionGroupingInterval * 1.01)
         }
     }
-    
+
+    private var retrospectiveGlucoseDiscrepanciesSummed: [GlucoseChange]?
+
+
     fileprivate var predictedGlucose: [GlucoseValue]? {
         didSet {
             recommendedTempBasal = nil
             recommendedBolus = nil
         }
     }
-    fileprivate var retrospectivePredictedGlucose: [GlucoseValue]? {
-        didSet {
-            retrospectiveGlucoseEffect = []
-        }
-    }
+
     fileprivate var recommendedTempBasal: (recommendation: TempBasalRecommendation, date: Date)?
     fileprivate var recommendedBolus: (recommendation: BolusRecommendation, date: Date)?
     
@@ -560,6 +559,7 @@ extension LoopDataManager {
     /// temporary basal rate.
     func loop() {
         self.dataAccessQueue.async {
+            self.logger.default("Loop running")
             NotificationCenter.default.post(name: .LoopRunning, object: self)
             
             self.lastLoopError = nil
@@ -576,6 +576,7 @@ extension LoopDataManager {
                         } else {
                             self.lastLoopCompleted = Date()
                         }
+                        self.logger.default("Loop ended")
                         self.notify(forChange: .tempBasal)
                     }
                     
@@ -587,7 +588,9 @@ extension LoopDataManager {
             } catch let error {
                 self.lastLoopError = error
             }
-            
+
+
+            self.logger.default("Loop ended")
             self.notify(forChange: .tempBasal)
         }
     }
@@ -613,20 +616,13 @@ extension LoopDataManager {
         guard let lastGlucoseDate = latestGlucoseDate else {
             throw LoopError.missingDataError(.glucose)
         }
-        
-        let retrospectiveStart = lastGlucoseDate.addingTimeInterval(-settings.retrospectiveCorrectionInterval)
-        
+
+
+        let retrospectiveStart = lastGlucoseDate.addingTimeInterval(-settings.retrospectiveCorrectionIntegrationInterval)
+
         let earliestEffectDate = Date(timeIntervalSinceNow: .hours(-24))
         let nextEffectDate = insulinCounteractionEffects.last?.endDate ?? earliestEffectDate
-        
-        if retrospectiveGlucoseChange == nil {
-            updateGroup.enter()
-            glucoseStore.getGlucoseChange(start: retrospectiveStart) { (change) in
-                self.retrospectiveGlucoseChange = change
-                updateGroup.leave()
-            }
-        }
-        
+
         if glucoseMomentumEffect == nil {
             updateGroup.enter()
             glucoseStore.getRecentMomentumEffect { (effects) -> Void in
@@ -637,7 +633,7 @@ extension LoopDataManager {
         
         if insulinEffect == nil {
             updateGroup.enter()
-            doseStore.getGlucoseEffects(start: min(retrospectiveStart, nextEffectDate)) { (result) -> Void in
+            doseStore.getGlucoseEffects(start: nextEffectDate) { (result) -> Void in
                 switch result {
                 case .failure(let error):
                     self.logger.error(error)
@@ -698,8 +694,9 @@ extension LoopDataManager {
         }
         
         _ = updateGroup.wait(timeout: .distantFuture)
-        
-        if retrospectivePredictedGlucose == nil {
+
+
+        if retrospectiveGlucoseDiscrepancies == nil {
             do {
                 try updateRetrospectiveGlucoseEffect()
             } catch let error {
@@ -793,7 +790,7 @@ extension LoopDataManager {
         var prediction = LoopMath.predictGlucose(startingAt: glucose, momentum: momentum, effects: effects)
         
         // Dosing requires prediction entries at least as long as the insulin model duration.
-        // If our prediciton is shorter than that, then extend it here.
+        // If our prediction is shorter than that, then extend it here.
         let finalDate = glucose.startDate.addingTimeInterval(model.effectDuration)
         if let last = prediction.last, last.startDate < finalDate {
             prediction.append(PredictedGlucoseValue(startDate: finalDate, quantity: last.quantity))
@@ -801,53 +798,41 @@ extension LoopDataManager {
         
         return prediction
     }
-    
-    /**
-     Runs the glucose retrospective analysis using the latest effect data.
-     
-     *This method should only be called from the `dataAccessQueue`*
-     */
+
+
+    /// Generates an effect based on how large the discrepancy is between the current glucose and its predicted value.
+    ///
+    /// - Parameter effectDuration: The length of time to extend the effect
+    /// - Throws: LoopError.missingDataError
     private func updateRetrospectiveGlucoseEffect(effectDuration: TimeInterval = TimeInterval(minutes: 60)) throws {
         dispatchPrecondition(condition: .onQueue(dataAccessQueue))
-        
-        guard let carbEffect = self.carbEffect else {
-            self.retrospectivePredictedGlucose = nil
+
+        guard let carbEffects = self.carbEffect else {
+            retrospectiveGlucoseDiscrepancies = nil
+            retrospectiveGlucoseEffect = []
             throw LoopError.missingDataError(.carbEffect)
         }
-        
-        guard let insulinEffect = self.insulinEffect else {
-            self.retrospectivePredictedGlucose = nil
-            throw LoopError.missingDataError(.insulinEffect)
+
+        retrospectiveGlucoseDiscrepancies = insulinCounteractionEffects.subtracting(carbEffects, withUniformInterval: carbStore.delta)
+
+        // Our last change should be recent, otherwise clear the effects
+        guard let discrepancy = retrospectiveGlucoseDiscrepanciesSummed?.last,
+            Date().timeIntervalSince(discrepancy.endDate) <= settings.recencyInterval
+        else {
+            retrospectiveGlucoseEffect = []
+            return
         }
-        
-        guard let change = retrospectiveGlucoseChange else {
-            self.retrospectivePredictedGlucose = nil
-            return  // Expected case for calibrations
+
+        guard let glucose = self.glucoseStore.latestGlucose else {
+            retrospectiveGlucoseEffect = []
+            throw LoopError.missingDataError(.glucose)
         }
-        
-        // Run a retrospective prediction over the duration of the recorded glucose change, using the current carb and insulin effects
-        let startDate = change.start.startDate
-        let endDate = change.end.endDate
-        let retrospectivePrediction = LoopMath.predictGlucose(startingAt: change.start, effects:
-            carbEffect.filterDateRange(startDate, endDate),
-                                                              insulinEffect.filterDateRange(startDate, endDate)
-        )
-        
-        self.retrospectivePredictedGlucose = retrospectivePrediction
-        
-        guard let lastGlucose = retrospectivePrediction.last else { return }
-        let glucoseUnit = HKUnit.milligramsPerDeciliter
-        let velocityUnit = glucoseUnit.unitDivided(by: HKUnit.second())
-        
-        let discrepancy = change.end.quantity.doubleValue(for: glucoseUnit) - lastGlucose.quantity.doubleValue(for: glucoseUnit) // mg/dL
-        
-        // Determine the interval of discrepancy, requiring a minimum of the configured interval to avoid magnifying effects from short intervals
-        let discrepancyTime = max(change.end.endDate.timeIntervalSince(change.start.endDate), settings.retrospectiveCorrectionInterval)
-        let velocity = HKQuantity(unit: velocityUnit, doubleValue: discrepancy / discrepancyTime)
-        let type = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bloodGlucose)!
-        let glucose = HKQuantitySample(type: type, quantity: change.end.quantity, start: change.end.startDate, end: change.end.endDate)
-        
-        self.retrospectiveGlucoseEffect = glucose.decayEffect(atRate: velocity, for: effectDuration)
+
+        let unit = HKUnit.milligramsPerDeciliter
+        let discrepancyTime = max(discrepancy.endDate.timeIntervalSince(discrepancy.startDate), settings.retrospectiveCorrectionGroupingInterval)
+        let velocity = HKQuantity(unit: unit.unitDivided(by: .second()), doubleValue: discrepancy.quantity.doubleValue(for: unit) / discrepancyTime)
+
+        retrospectiveGlucoseEffect = glucose.decayEffect(atRate: velocity, for: effectDuration)
     }
     
     /// Runs the glucose prediction on the latest effect data.
@@ -1021,10 +1006,10 @@ protocol LoopState {
     var recommendedTempBasal: (recommendation: TempBasalRecommendation, date: Date)? { get }
     
     var recommendedBolus: (recommendation: BolusRecommendation, date: Date)? { get }
-    
-    /// The retrospective prediction over a recent period of glucose samples
-    var retrospectivePredictedGlucose: [GlucoseValue]? { get }
-    
+
+    /// The difference in predicted vs actual glucose over a recent period
+    var retrospectiveGlucoseDiscrepancies: [GlucoseChange]? { get }
+
     /// Calculates a new prediction from the current data using the specified effect inputs
     ///
     /// This method is intended for visualization purposes only, not dosing calculation. No validation of input data is done.
@@ -1080,10 +1065,11 @@ extension LoopDataManager {
             dispatchPrecondition(condition: .onQueue(loopDataManager.dataAccessQueue))
             return loopDataManager.recommendedBolus
         }
-        
-        var retrospectivePredictedGlucose: [GlucoseValue]? {
+
+
+        var retrospectiveGlucoseDiscrepancies: [GlucoseChange]? {
             dispatchPrecondition(condition: .onQueue(loopDataManager.dataAccessQueue))
-            return loopDataManager.retrospectivePredictedGlucose
+            return loopDataManager.retrospectiveGlucoseDiscrepanciesSummed
         }
         
         func predictGlucose(using inputs: PredictionInputEffect) throws -> [GlucoseValue] {
@@ -1122,8 +1108,9 @@ extension LoopDataManager {
     /// - parameter completion: A closure called once the report has been generated. The closure takes a single argument of the report string.
     func generateDiagnosticReport(_ completion: @escaping (_ report: String) -> Void) {
         getLoopState { (manager, state) in
-            
-            var entries = [
+
+
+            var entries: [String] = [
                 "## LoopDataManager",
                 "settings: \(String(reflecting: manager.settings))",
                 
@@ -1133,21 +1120,48 @@ extension LoopDataManager {
                     entries.append("* \(entry.startDate), \(entry.endDate), \(entry.quantity.doubleValue(for: GlucoseEffectVelocity.unit))\n")
                 }),
                 "]",
-                
+
+
+                "insulinEffect: [",
+                "* GlucoseEffect(start, mg/dL)",
+                (manager.insulinEffect ?? []).reduce(into: "", { (entries, entry) in
+                    entries.append("* \(entry.startDate), \(entry.quantity.doubleValue(for: .milligramsPerDeciliter))\n")
+                }),
+                "]",
+
+                "carbEffect: [",
+                "* GlucoseEffect(start, mg/dL)",
+                (manager.carbEffect ?? []).reduce(into: "", { (entries, entry) in
+                    entries.append("* \(entry.startDate), \(entry.quantity.doubleValue(for: .milligramsPerDeciliter))\n")
+                }),
+                "]",
+
                 "predictedGlucose: [",
                 "* PredictedGlucoseValue(start, mg/dL)",
                 (state.predictedGlucose ?? []).reduce(into: "", { (entries, entry) in
                     entries.append("* \(entry.startDate), \(entry.quantity.doubleValue(for: .milligramsPerDeciliter))\n")
                 }),
                 "]",
-                
-                "retrospectivePredictedGlucose: \(state.retrospectivePredictedGlucose ?? [])",
+
+                "retrospectiveGlucoseDiscrepancies: [",
+                "* GlucoseEffect(start, mg/dL)",
+                (manager.retrospectiveGlucoseDiscrepancies ?? []).reduce(into: "", { (entries, entry) in
+                    entries.append("* \(entry.startDate), \(entry.quantity.doubleValue(for: .milligramsPerDeciliter))\n")
+                }),
+                "]",
+
+                "retrospectiveGlucoseDiscrepanciesSummed: [",
+                "* GlucoseChange(start, end, mg/dL)",
+                (manager.retrospectiveGlucoseDiscrepanciesSummed ?? []).reduce(into: "", { (entries, entry) in
+                    entries.append("* \(entry.startDate), \(entry.endDate), \(entry.quantity.doubleValue(for: .milligramsPerDeciliter))\n")
+                }),
+                "]",
+
                 "glucoseMomentumEffect: \(manager.glucoseMomentumEffect ?? [])",
                 "retrospectiveGlucoseEffect: \(manager.retrospectiveGlucoseEffect)",
                 "recommendedTempBasal: \(String(describing: state.recommendedTempBasal))",
                 "recommendedBolus: \(String(describing: state.recommendedBolus))",
                 "lastBolus: \(String(describing: manager.lastRequestedBolus))",
-                "retrospectiveGlucoseChange: \(String(describing: manager.retrospectiveGlucoseChange))",
                 "lastLoopCompleted: \(String(describing: manager.lastLoopCompleted))",
                 "lastTempBasal: \(String(describing: state.lastTempBasal))",
                 "carbsOnBoard: \(String(describing: state.carbsOnBoard))",
