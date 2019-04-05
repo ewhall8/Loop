@@ -568,7 +568,7 @@ final class StatusTableViewController: ChartsTableViewController {
                 } else if let cell = tableView.cellForRow(at: statusIndexPath) {
                     // If only the enacting state changed, update the activity indicator
                     if isEnacting {
-                        let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        let indicatorView = UIActivityIndicatorView(style: .gray)
                         indicatorView.startAnimating()
                         cell.accessoryView = indicatorView
                     } else {
@@ -714,7 +714,7 @@ final class StatusTableViewController: ChartsTableViewController {
                     cell.selectionStyle = .default
 
                     if enacting {
-                        let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        let indicatorView = UIActivityIndicatorView(style: .gray)
                         indicatorView.startAnimating()
                         cell.accessoryView = indicatorView
                     } else {
@@ -724,7 +724,7 @@ final class StatusTableViewController: ChartsTableViewController {
                     cell.titleLabel.text = NSLocalizedString("Starting Bolus", comment: "The title of the cell indicating a bolus is being sent")
                     cell.subtitleLabel.text = nil
 
-                    let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                    let indicatorView = UIActivityIndicatorView(style: .gray)
                     indicatorView.startAnimating()
                     cell.accessoryView = indicatorView
                 }
@@ -778,7 +778,7 @@ final class StatusTableViewController: ChartsTableViewController {
         switch Section(rawValue: indexPath.section)! {
         case .charts:
             // Compute the height of the HUD, defaulting to 70
-            let hudHeight = ceil(hudView?.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height ?? 70)
+            let hudHeight = ceil(hudView?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height ?? 70)
             var availableSize = max(tableView.bounds.width, tableView.bounds.height)
 
             if #available(iOS 11.0, *) {
@@ -796,7 +796,7 @@ final class StatusTableViewController: ChartsTableViewController {
                 return max(106, 0.21 * availableSize)
             }
         case .hud, .status:
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
     }
 
@@ -950,7 +950,7 @@ final class StatusTableViewController: ChartsTableViewController {
         item.accessibilityLabel = NSLocalizedString("Pre-Meal Targets", comment: "The label of the pre-meal mode toggle button")
 
         if selected {
-            item.accessibilityTraits = item.accessibilityTraits | UIAccessibilityTraitSelected
+            item.accessibilityTraits = UIAccessibilityTraits(rawValue: item.accessibilityTraits.rawValue | UIAccessibilityTraits.selected.rawValue)
             item.accessibilityHint = NSLocalizedString("Disables", comment: "The action hint of the workout mode toggle button when enabled")
         } else {
             item.accessibilityHint = NSLocalizedString("Enables", comment: "The action hint of the workout mode toggle button when disabled")
@@ -966,7 +966,7 @@ final class StatusTableViewController: ChartsTableViewController {
         item.accessibilityLabel = NSLocalizedString("Workout Targets", comment: "The label of the workout mode toggle button")
 
         if selected {
-            item.accessibilityTraits = item.accessibilityTraits | UIAccessibilityTraitSelected
+            item.accessibilityTraits = UIAccessibilityTraits(rawValue: item.accessibilityTraits.rawValue | UIAccessibilityTraits.selected.rawValue)
             item.accessibilityHint = NSLocalizedString("Disables", comment: "The action hint of the workout mode toggle button when enabled")
         } else {
             item.accessibilityHint = NSLocalizedString("Enables", comment: "The action hint of the workout mode toggle button when disabled")

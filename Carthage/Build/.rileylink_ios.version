@@ -5,49 +5,59 @@
   "watchOS" : [
     {
       "name" : "RileyLinkKit",
-      "hash" : "e7b0f3ef0d2d2e4437f9079a3563bee55bd3f6bba3179f5873339fed917789ff"
+      "hash" : "c4295eb0f618d16c034c0f206f5777e26817b833d2344e5c7ce14f0e910d3085",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "RileyLinkBLEKit",
-      "hash" : "b6d7b153e9e9ae98d357968566eb5ce313fd8e4d68f1212406d2f1df5cde9a3f"
+      "hash" : "0ca907710be5a61bd422f9e06ff7c10ea4e6e68886b13e3e4792576629875746",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "MinimedKit",
-      "hash" : "2088ce0871cbfae039a6589cec165ad75713c7cdc551014a972b0c5e98db71c7"
+      "hash" : "8f8cdb1beb1403a60551b6c1fefcf0095dec7efd904339a2aba1f0bd136d2fe8",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ],
   "tvOS" : [
 
   ],
-  "commitish" : "v2.1.0",
+  "commitish" : "v2.1.1",
   "iOS" : [
     {
-      "name" : "Crypto",
-      "hash" : "0bd118ad5acedc86365a5b3180d9591807324a4bcb512abef667b5f790ff0c6b"
-    },
-    {
       "name" : "RileyLinkKit",
-      "hash" : "7286f08d99655a38b5f73337b9199d34f4753c06bcaa578001f2e8c5e488dd33"
+      "hash" : "99dbee6b996ce05295237f545fb0c3bf5110afe00c2c7ffa550ca207cfc24e4e",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
-      "name" : "NightscoutUploadKit",
-      "hash" : "986be1b2651007e3b49397c118231b894f00957d7bc59114e259c081d3bfdadb"
-    },
-    {
-      "name" : "MinimedKitUI",
-      "hash" : "79781972ff7811d7597d376f4644be9e1be4d235a497314fb25111ab097db0a5"
+      "name" : "Crypto",
+      "hash" : "ead11a1ebd7d16947e75b4bf4892e224f9aea829c0cfdc7b8316d6fee50bf218",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "RileyLinkKitUI",
-      "hash" : "a267b1cd86b01abe17c8eceee046a39778f377e7397738c1cef9017eb16c7383"
+      "hash" : "789d08befbbab3aac77d810d1ff6d56476fea2a0fbaee3cc42c7e356cebb3520",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
+    },
+    {
+      "name" : "NightscoutUploadKit",
+      "hash" : "b448039ab0dc7ffa298db5da40f91892dd853d0f503a5b2637fe0bb2310cdb50",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
+    },
+    {
+      "name" : "MinimedKitUI",
+      "hash" : "7fb74bfc2e547b83a2d9e6c3cc5337a0823819a523249a185b87dfb17b95d989",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "RileyLinkBLEKit",
-      "hash" : "5fcb2b69bb00b10e82d9f2b500efb6e6572d69ce66161a8cae2927d02106e4ba"
+      "hash" : "0b94ef5edf57bf31344ebbe41145e9bb17a3bf2909775cf0668d71155d973868",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "MinimedKit",
-      "hash" : "0de0a011108a6992b418d18aa4b00b0946fb7c7f49e85ed75cd780d12e442fa1"
+      "hash" : "4b1c2092dbb13764c6211f5eea7517856731eac92914d6f0b4adb92555c9795b",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ]
 }

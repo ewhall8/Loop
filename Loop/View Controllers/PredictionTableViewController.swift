@@ -22,7 +22,7 @@ class PredictionTableViewController: ChartsTableViewController, IdentifiableClas
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.cellLayoutMarginsFollowReadableWidth = true
 
         charts.glucoseDisplayRange = (
@@ -320,7 +320,7 @@ class PredictionTableViewController: ChartsTableViewController, IdentifiableClas
     @objc private func retrospectiveCorrectionSwitchChanged(_ sender: UISwitch) {
         deviceManager.loopManager.settings.retrospectiveCorrectionEnabled = sender.isOn
 
-        if  let row = availableInputs.index(where: { $0 == .retrospection }),
+        if  let row = availableInputs.firstIndex(where: { $0 == .retrospection }),
             let cell = tableView.cellForRow(at: IndexPath(row: row, section: Section.inputs.rawValue)) as? PredictionInputEffectTableViewCell
         {
             cell.enabled = self.deviceManager.loopManager.settings.retrospectiveCorrectionEnabled

@@ -12,7 +12,8 @@
   "iOS" : [
     {
       "name" : "G4ShareSpy",
-      "hash" : "b687b026f3ebc218f4e54b3bcda7d2c2646f778e7d0f43146a4ac62469b68371"
+      "hash" : "49aa8c1fd77ad732e95cd50fa153b5beab962f1b3919efebc1218592bc5ec360",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ]
 }

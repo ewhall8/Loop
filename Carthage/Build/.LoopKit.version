@@ -5,21 +5,24 @@
   "watchOS" : [
     {
       "name" : "LoopKit",
-      "hash" : "adcce3d09647114f068b1d2182fab59e2ef152eef82b4529940662bcc2668fee"
+      "hash" : "4b7391043d1199299f73d7b3a3669ee60f95000970611849b97852696ac8da99",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ],
   "tvOS" : [
 
   ],
-  "commitish" : "v2.2.1",
+  "commitish" : "v2.2.2",
   "iOS" : [
     {
       "name" : "LoopKitUI",
-      "hash" : "fc0e5228c2fe87bcf1f174bbed77ebe0e778506a4c22331cbeea725e2aeb92d2"
+      "hash" : "3b0f9ac420660cbec2c162d355113516dcb74d5ad07bfe6ec0854c625afac0b2",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "LoopKit",
-      "hash" : "1b37284cc33218786a15633bf49e4cfbe398c7503e69739aed85c10ae41e5ad9"
+      "hash" : "64121e0a08f6bb9fb45c501f63dab237587b61580d28c71c224f05d2b865225d",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ]
 }

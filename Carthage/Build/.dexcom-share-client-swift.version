@@ -5,7 +5,8 @@
   "watchOS" : [
     {
       "name" : "ShareClient",
-      "hash" : "69c92e1055897745a07378a42c0eca9de52392f2d405110a5aa8f3ba032fb1f6"
+      "hash" : "cc66a59075e51edeb16c7c1c8065f16d9033aba93acf5733dd9108c0e760ee47",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ],
   "tvOS" : [
@@ -15,11 +16,13 @@
   "iOS" : [
     {
       "name" : "ShareClientUI",
-      "hash" : "5daaa7f7da63411619bb13ac061108257a1ebb2359ad1de412a61d3c142e5c34"
+      "hash" : "5bd1eec510349f8428d344e9729ceaf658a17fe795cf5d3319dbfc19843e5efd",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "ShareClient",
-      "hash" : "7b5d088a3e4c73d4812455ca2a2eb17400450d18b873e2268be258b350726c45"
+      "hash" : "827390df92a3b564c7a5b4a2ce525f6e6f1e1b70fc68556c22b1dae3418810d6",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ]
 }

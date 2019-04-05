@@ -98,7 +98,7 @@ struct NotificationManager {
             notification.body = error.localizedDescription
         }
         
-        notification.sound = UNNotificationSound.default()
+        notification.sound = UNNotificationSound.default
         
         if startDate.timeIntervalSinceNow >= TimeInterval(minutes: -5) {
             notification.categoryIdentifier = Category.bolusFailure.rawValue
@@ -142,7 +142,7 @@ struct NotificationManager {
             }
             
             notification.title = NSLocalizedString("Loop Failure", comment: "The notification title for a loop failure")
-            notification.sound = UNNotificationSound.default()
+            notification.sound = UNNotificationSound.default
             notification.categoryIdentifier = Category.loopNotRunning.rawValue
             notification.threadIdentifier = Category.loopNotRunning.rawValue
             
@@ -177,7 +177,7 @@ struct NotificationManager {
         
         notification.title = NSLocalizedString("Pump Battery Low", comment: "The notification title for a low pump battery")
         notification.body = NSLocalizedString("Change the pump battery immediately", comment: "The notification alert describing a low pump battery")
-        notification.sound = UNNotificationSound.default()
+        notification.sound = UNNotificationSound.default
         notification.categoryIdentifier = Category.pumpBatteryLow.rawValue
         
         sendAlertPushNotification(alert: notification.body)
@@ -199,7 +199,7 @@ struct NotificationManager {
         
         notification.title = NSLocalizedString("Pump Reservoir Empty", comment: "The notification title for an empty pump reservoir")
         notification.body = NSLocalizedString("Change the pump reservoir now", comment: "The notification alert describing an empty pump reservoir")
-        notification.sound = UNNotificationSound.default()
+        notification.sound = UNNotificationSound.default
         notification.categoryIdentifier = Category.pumpReservoirEmpty.rawValue
         
         let request = UNNotificationRequest(
@@ -233,7 +233,7 @@ struct NotificationManager {
         }
         
         sendAlertPushNotification(alert: notification.body)
-        notification.sound = UNNotificationSound.default()
+        notification.sound = UNNotificationSound.default
         notification.categoryIdentifier = Category.pumpReservoirLow.rawValue
         
         let request = UNNotificationRequest(

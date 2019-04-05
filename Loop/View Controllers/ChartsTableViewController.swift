@@ -50,7 +50,7 @@ extension RefreshContext: Hashable {
 extension Set where Element == RefreshContext {
     /// Returns the size value in the set if one exists
     var newSize: CGSize? {
-        guard let index = index(of: .size(.zero)),
+        guard let index = firstIndex(of: .size(.zero)),
             case .size(let size) = self[index] else
         {
             return nil
@@ -86,10 +86,10 @@ class ChartsTableViewController: UITableViewController, UIGestureRecognizerDeleg
 
         let notificationCenter = NotificationCenter.default
         notificationObservers += [
-            notificationCenter.addObserver(forName: .UIApplicationWillResignActive, object: UIApplication.shared, queue: .main) { [weak self] _ in
+            notificationCenter.addObserver(forName: UIApplication.willResignActiveNotification, object: UIApplication.shared, queue: .main) { [weak self] _ in
                 self?.active = false
             },
-            notificationCenter.addObserver(forName: .UIApplicationDidBecomeActive, object: UIApplication.shared, queue: .main) { [weak self] _ in
+            notificationCenter.addObserver(forName: UIApplication.didBecomeActiveNotification, object: UIApplication.shared, queue: .main) { [weak self] _ in
                 self?.active = true
             }
         ]

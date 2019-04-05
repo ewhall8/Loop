@@ -5,7 +5,8 @@
   "watchOS" : [
     {
       "name" : "CGMBLEKit",
-      "hash" : "fb353883ec45de179e576d95e63c084524717733bf6701195ad2d4b1cc921cce"
+      "hash" : "817786c9f0a48d301c4d1495256054064e44dafac2a2c00fb96733bced5664b4",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ],
   "tvOS" : [
@@ -15,11 +16,13 @@
   "iOS" : [
     {
       "name" : "CGMBLEKitUI",
-      "hash" : "4aa67ffc1342f6b9f665317716933c6ada3c0be52323615fea19388edd6241af"
+      "hash" : "d44142a86e53e8acbc31a4e25a8bb8f98390b8eea474c8116fd9525fda47f646",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     },
     {
       "name" : "CGMBLEKit",
-      "hash" : "1f1e8fcb104c13ef9a07efd278b127c1717e31ecfa89ca8c58f90251bed89004"
+      "hash" : "5fb0508525141f825760920b917095e37fdd3b62651a3aa6a6f8cfe3cc6f722d",
+      "swiftToolchainVersion" : "5.0 (swiftlang-1001.0.69.5 clang-1001.0.46.3)"
     }
   ]
 }
